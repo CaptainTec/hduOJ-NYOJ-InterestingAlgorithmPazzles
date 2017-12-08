@@ -1,0 +1,107 @@
+/**
+  *dfs+二分搜索
+  *迷宫可以向上走，向下走，向右走，向左走
+  *从(1,1)到(n,n)能否找到一条路径，
+  *其路径上单元格最大难度值与最小难度值之差是最小的
+*/
+#include<iostream>
+#include<cstdio>
+#include<map>
+#include<cstring>
+#include<string>
+#include<algorithm>
+#include<queue>
+#include<vector>
+#include<stack>
+#include<cstdlib>
+#include<cctype>
+#include<cmath>
+#define LL long long
+using namespace std;
+/**
+ *minn：地图中的最小值，
+ *maxn：地图中的最大值，
+ *flag：标记差值在某个范围内是否能够到达(n,n)
+ *vmap[][]：地图
+ *vis[i][j]：该节点是否已被访问
+ *dx[],dy[]:搜索四个方向
+ */
+int n,minn,maxn,flag;
+int vis[120][120],vmap[120][120];
+int dx[]={0,0,1,-1},dy[]={1,-1,0,0};
+/**
+ *差值在R-L的范围内是否存在从(1,1)-->(n,n)的路径
+ *这里判断的是每一值是否在[L,R]之间·
+ */
+void dfs(int i,int j,int L,int R)
+{
+    if(flag) return;
+    if(i==n&&j==n){//能够找到有效路径,返回，不在搜素其他值
+        flag=1; return;
+    }
+    for(int k=0;k<4;k++)
+	{
+        int xi=i+dx[k];
+        int xj=j+dy[k];
+        if(vmap[xi][xj]>=L&&vmap[xi][xj]<=R&&vis[xi][xj]==0)
+		{
+            //改点的值满足条件且未被访问。
+            vis[xi][xj]=1;//这里一定要先标记啊
+            dfs(xi,xj,L,R);
+        }
+    }
+}
+/**
+ *用来判断当差值为k时，是否满足能够找到从(1,1)-->(n,n)的路径
+ */
+int Judge(int k)
+{
+    for(int i=minn;i<=maxn-k;i++)
+	{
+        flag=0;//先标记没有合法路径
+        //因为dfs函数中没有判断vmap[1][1]和vmap[n][n]是否合法，这里要特判
+        if(vmap[1][1]<i||vmap[1][1]>i+k) continue;
+        if(vmap[n][n]<i||vmap[n][n]>i+k) continue;
+
+        memset(vis,0,sizeof(vis));
+        vis[1][1]=1;//从(1,1)访问
+        dfs(1,1,i,i+k);
+        if(flag) return 1;//可以找到有效路径从(1,1)-->(n,n)
+    }
+    return 0;
+}
+
+int Get_ans()
+{
+    int lt=0,r=maxn-minn;
+    while(lt<r)
+	{
+        int mid=(lt+r)/2;
+        if(Judge(mid))	//当前值mid合法，可能还可以继续减小搜素
+            r=mid;
+        else lt=mid+1;
+    }
+    return r;//return lt;
+}
+
+int main()
+{
+    while(~scanf("%d",&n))
+	{
+        minn=121;
+	    maxn=-1;
+	    memset(vmap,-1,sizeof(vmap));//这里一定要赋值为小于0或者大于120的值
+	    for(int i=1;i<=n;i++)
+		{
+	        for(int j=1;j<=n;j++)
+			{
+	            scanf("%d",&vmap[i][j]);
+	            maxn=max(vmap[i][j],maxn);
+	            minn=min(vmap[i][j],minn);
+	        }
+	    }
+	    
+        printf("%d\n",Get_ans());
+    }
+    return 0;
+}
