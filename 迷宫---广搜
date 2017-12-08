@@ -1,0 +1,113 @@
+广度优先遍历寻最短路径--迷宫
+描述
+给有一个N*M的迷宫，包含起点S，和终点D，墙X和地面，0秒主人公从S出发，每秒能走到四个与其相邻的位置中间的一个，且每个位置被行走之后都不能再次走入，问是否存在这样一个条路径使主人公在T前（包含T）秒时刚好走到D。
+输入
+输入包含多组数据，每组数据第一行为N,M,T(1<N,M<7;0<T<50),接下来是N行M列的迷宫，S和D分别表示出发点和终点，“.”和“X”分别表示地面和墙。地面能走，墙不能走。N=M=T=0表示输入结束。
+输出
+存在上面的路径输出YES否则输出NO
+
+样例输入：
+4 4 5
+S.X.
+..X.
+..XD
+....
+3 4 5
+S.X.
+..X.
+...D
+0 0 0
+样例输出：
+NO
+YES
+
+
+
+
+#include <cstdio>
+#include <queue> 
+#include <cstring>
+
+using namespace std;
+
+const int maxn = 10;
+//struct Point{
+//	int x; 
+//	int y;
+//	int deep;	
+//};
+
+int sx, sy, ddx, ddy;	// 分别表示起点和终点的坐标 
+char maps[maxn][maxn];
+int vis[maxn][maxn];	// vis[i][j]==1表示（i, j）已经访问过了 
+int dx[4] = {-1, 1, 0, 0};	// 方向数组，表示x坐标的上下左右 
+int dy[4] = {0, 0, -1, 1};
+bool ok = false;
+int n, m, t;
+// d*100 + x * 10 + y ==> dxy
+// 从坐标x, y出发bfs遍历这个图 
+void bfs(int x, int y) {
+	memset(vis, 0, sizeof(vis));
+	queue<int> q; 	// 保存编码后的坐标 
+	q.push(x*10+y); // 将坐标编码后加入队列
+	vis[x][y] = true;	// 将当前坐标也标记下 
+	int deep = 0;
+	ok = false;
+	while(!q.empty())
+	{
+		int h = q.front();	// 弹出队首元素	
+		q.pop();
+		int xx = h / 10 % 10;	// 将坐标解码 
+		int yy = h % 10;
+		deep = h / 100;	// 得到该结点的在BFS树中的深度 
+		vis[xx][yy] = 1;	// 标记当前结点访问过了 
+		if( maps[xx][yy] == 'D')
+		{	// 当前结点就是要找的终点
+			if(deep <= t) ok = true;
+			break;
+		}
+		for(int i=0; i<4; i++)
+		{	// 检查四个方向 
+			int newx = xx + dx[i];	// 新坐标 
+			int newy = yy + dy[i]; 
+			int next = deep+1;	// 深度加1 
+			if( newx>=0 && newx<n && newy>=0 && newy<m	// 下标不能越界 
+				&& (maps[newx][newy] == '.' || maps[newx][newy] == 'D')	// 空地或者是终点 
+				&& vis[newx][newy] == 0	)// 没有访问  
+			{
+				q.push(next*100+newx*10 + newy);	// 将坐标解码放入队尾 
+			} 
+		}
+		
+	} 
+	
+}
+
+int main()
+{
+	while(scanf("%d%d%d", &n, &m, &t) == 3)
+	{
+		if(n==0 && m==0 && t==0) break;	
+		gets(maps[0]);	// 接收第一行的回车 
+		for(int i=0; i<n; i++)
+		{
+			gets(maps[i]);	// 每次从“窗口”（表示输入流）接收一行
+			for(int j=0; j<m; j++)
+			{	// 寻找 起点和终点的坐标 
+				if(maps[i][j] == 'D')
+				{
+					ddx = i;
+					ddy = j;
+				}
+				else if(maps[i][j] == 'S')
+				{
+					sx = i;
+					sy = j;
+				}
+			}	
+		}
+		bfs(sx, sy);
+		printf("%s\n", ok? "YES":"NO");	
+	}
+	return 0;
+}
