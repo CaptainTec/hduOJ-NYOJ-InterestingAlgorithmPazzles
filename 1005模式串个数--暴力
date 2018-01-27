@@ -1,0 +1,32 @@
+//字符串模式匹配---暴力 
+#include <cstdio>
+#include <cstring>
+int main()
+{
+	int t, cnt;
+	char a[12], b[1002];
+	scanf("%d",&t);
+	while(t--)
+	{
+		cnt = 0;
+		scanf("%s %s",a,b);
+		int len_a = strlen(a);
+		int len_b = strlen(b);
+		for(int j=0; j<len_b; ++j)
+		{
+			int k = j;//记录一下主串的下标 
+			for(int i=0; i<len_a; )
+			{
+				if(a[i]==b[k])
+				{
+					if(i==len_a-1) cnt++;//若已经是模式串的最后一个元素。则此次匹配成功 
+					++i;
+					++k;
+				}
+				else break;//有不相等的元素，则主串+1，模式串归零。重新比较 
+			}
+		}
+		printf("%d\n",cnt);
+	} 
+    return 0;
+}
