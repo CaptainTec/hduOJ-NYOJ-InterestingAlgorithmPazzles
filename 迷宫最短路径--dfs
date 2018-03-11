@@ -1,0 +1,85 @@
+/*problem description
+有一个二维迷宫，n行m列，‘s’表示迷宫的起点，‘T’表示迷宫的终点，‘#’表示围墙，‘.’表示通路。
+现在从S出发，你不能穿墙，问到达终点T最少需要多少步？
+输入格式
+第一行输入n,m（1<=n,m<=50）表示迷宫的行列大小。
+接下来输入n行字符串表示迷宫。
+输出格式
+一个整数，表示走出迷宫所需的最小步数，若走不出迷宫则输出 -1。
+样例输入1
+2 3
+S.#
+..T
+样例输出1
+3
+
+样例输入2
+3 3
+S.#
+.#.
+.#T
+样例输出2
+ -1
+ */
+#include<iostream>
+#include<cstdio>
+#include<string.h>
+#define MAX 101
+using namespace std;
+
+int vis[MAX][MAX];//标记数组，防止重复行走 
+char map[MAX][MAX];//存迷宫 
+int dir[4][2]={{1,0},{0,1},{-1,0},{0,-1}};//方向辅助 
+
+int n,m,ans,Min,num;//主函数外声明 
+
+
+void dfs(int x,int y,int z)
+{
+	if(z>Min) return ;
+	vis[x][y]=1;
+	if(map[x][y]=='T'){
+		ans++;
+		if(z<Min) Min=z;
+	}	
+	else{
+		for(int i=0;i<4;++i){
+			int tx,ty;
+			tx=x+dir[i][0];//枚举方向 
+			ty=y+dir[i][1];
+			if(tx<0||ty<0||tx>=n||ty>=m){//边界判断 
+				continue;
+			}
+			else{
+				if(vis[tx][ty]==0&&map[tx][ty]!='#'){//符合条件，前进！ 
+					dfs(tx,ty,z+1);
+				}
+			}
+		}
+	}
+	vis[x][y]=0;//当代码进行到这，说明以这个点为起点的下面支路以走完，取消该点标记 
+}
+
+int main()
+{
+	Min=0xfffff;
+	int x,y;
+	cin>>n>>m;
+	for(int i=0;i<n;++i){
+		cin>>map[i];
+	}
+	for(int i=0;i<n;++i){
+	for(int j=0;j<m;++j){
+		if(map[i][j]=='S'){
+			x=i,y=j;
+			break;
+		}
+	}
+	}
+	memset(vis,0,sizeof(vis));
+	ans=0;//
+	dfs(x,y,0);
+	if(ans==0) cout<<"-1"<<endl;
+	else cout<<Min<<endl;
+	return 0;
+}
