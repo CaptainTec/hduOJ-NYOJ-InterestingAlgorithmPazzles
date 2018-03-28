@@ -1,0 +1,46 @@
+nyoj1328派队方案 
+n个东西放入m个盒子的两种常见问题 
+时间限制：1000 ms | 内存限制：65535 KB 
+难度：3 
+描述 
+2017年有n场ACM比赛，南阳理工学院有m支集训队，且这n场比赛学校均会派一个队伍参赛。现在赵老师来安排外出比赛顺序，他想知道如果要使每个队伍至少外出比赛一次，则有多少种派队方案？（保证这n场比赛时间相互独立） 
+输入 
+多组测试数据。每组测试数据占一行，每行两个数字n（1<=n<=100），m(1<=m<=100)表示有n场比赛，m支集训队。其中输入数据保证n>=m。 
+输出 
+每组输入数据的输出占一行，结果对1000000007取余。 
+样例输入 
+3 2 
+5 4 
+样例输出 
+6 
+240
+
+//第二类Stirling数：S(r, c) = S(r-1,c-1) + c * S(r-1, c)
+//s[1][1] = s[2][1] = s[2][2] = 1;
+//n个不同东西放入m个相同盒子 种数 = S(n, m);
+//n个不同东西放入m个不相同盒子 种数 = m!*S(n, m);
+#include<iostream>
+#include<cstdio>
+const int MaxSize = 105;
+const int mod = 1000000007;
+long long s[MaxSize][MaxSize] = {0};
+long long factorial[MaxSize];
+
+using namespace std;
+int main() {
+  s[1][1] = s[2][1] = s[2][2] = 1;
+  for (int r = 3; r < MaxSize; r++) {
+    for (int c = 1; c <= r; c++) {
+      s[r][c] = (s[r-1][c-1] + c * s[r-1][c]) % mod;
+    }
+  }
+  factorial[0] = 1;
+  for (int i = 1; i <= 105; i++) {
+    factorial[i] = factorial[i-1] * i % mod;
+  }
+  int n, m;
+  while (scanf("%d%d", &n, &m) != EOF) {
+    printf("%lld\n", s[n][m] * factorial[m] % mod);
+  }
+  return 0;
+}
