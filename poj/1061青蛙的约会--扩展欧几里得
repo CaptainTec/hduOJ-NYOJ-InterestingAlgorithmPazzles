@@ -1,0 +1,72 @@
+import java.io.BufferedReader;
+import java.io.BufferedWriter;
+import java.io.InputStreamReader;
+import java.io.OutputStreamWriter;
+import java.io.PrintWriter;
+import java.math.BigInteger;
+import java.util.Scanner;
+
+/**
+ * 题意：中文题，不解析！
+ *
+ * 分析：典型的模线性方程求解。
+ *
+ * 解法：①、已知n,m,L,x,y 设步数为 s，由题意得出方程：(ms-ns) % L = y-x
+ *           化简得：(m-n)s ≡ (y-x)(mod L)
+ *       ②、根据扩展欧几里德算法求解模线性方程。
+ *
+ * @author TinyDolphin
+ */
+public class Main {
+
+    private static BigInteger x;
+    private static BigInteger y;
+
+    // 扩展欧几里德算法
+    public static BigInteger exGcd(BigInteger a, BigInteger b) {
+        if (b.compareTo(BigInteger.valueOf(0)) == 0) {
+            x = BigInteger.valueOf(1);
+            y = BigInteger.valueOf(0);
+            return a;
+        } else {
+            BigInteger d = exGcd(b, a.mod(b));
+            BigInteger temp = x;
+            x = y;
+            y = temp.subtract(a.divide(b).multiply(y));
+            return d;
+        }
+    }
+
+    public static void main(String[] args) {
+        Scanner in = new Scanner(new BufferedReader(new InputStreamReader(System.in)));
+        PrintWriter out = new PrintWriter(new BufferedWriter(new OutputStreamWriter(System.out)));
+        BigInteger X;
+        BigInteger Y;
+        BigInteger M;
+        BigInteger N;
+        BigInteger L;
+        BigInteger gcd;
+        while (in.hasNext()) {
+            X = in.nextBigInteger();
+            Y = in.nextBigInteger();
+            M = in.nextBigInteger();
+            N = in.nextBigInteger();
+            L = in.nextBigInteger();
+            BigInteger b = Y.subtract(X);
+            BigInteger a = M.subtract(N);
+            BigInteger n = L;
+            gcd = exGcd(a, n);
+            if (b.mod(gcd).compareTo(BigInteger.valueOf(0)) == 0) {
+                // 扩展欧几里德算法求解模线性方程中的 定理一
+                x = x.multiply(b.divide(gcd)).mod(n);
+                // 扩展欧几里德算法求解模线性方程中的 定理二
+                // 注意：得出的 x 可能是负数，需要求最小的正整数解，所以需要 ((x + n/d ) % n/d
+                x = x.add(n.divide(gcd)).mod(n.divide(gcd));
+                out.println(x);
+            } else {
+                out.println("Impossible");
+            }
+        }
+        out.flush();
+    }
+}
