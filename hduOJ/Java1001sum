@@ -1,0 +1,22 @@
+package ExerciseOJ;
+
+import java.io.BufferedReader;
+import java.io.InputStreamReader;
+
+public class Main1001
+{
+    public static void main(String[] args) throws Exception
+    {
+        BufferedReader stdin = new BufferedReader(new InputStreamReader(System.in));
+        String temp = null;
+        while ( (temp = stdin.readLine()) != null )
+        {
+            int n = Integer.parseInt(temp);
+            int sum = 0;
+            for(int i=1; i<=n; ++i)
+                sum += i;
+            System.out.println(sum);
+            System.out.println();//extra one huanhang
+        }
+    }
+}
