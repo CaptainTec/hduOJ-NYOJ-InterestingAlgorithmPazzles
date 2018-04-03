@@ -1,0 +1,19 @@
+package ExerciseOJ;
+
+import java.io.BufferedReader;
+import java.io.InputStreamReader;
+
+public class Main1000
+{
+    public static void main(String[] args) throws Exception
+    {
+        BufferedReader stdin = new BufferedReader(new InputStreamReader(System.in));
+        String temp = null;
+        while( (temp = stdin.readLine()) != null )
+        {
+            String[] mid = temp.split(" ");
+            System.out.println(Integer.parseInt(mid[0]) + Integer.parseInt(mid[1]));
+//            System.out.println(String.format("%.0f", Double.parseDouble(mid[0]) + Double.parseDouble(mid[1])));
+        }
+    }
+}
