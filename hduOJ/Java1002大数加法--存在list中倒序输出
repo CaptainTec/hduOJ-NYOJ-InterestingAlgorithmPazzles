@@ -1,0 +1,64 @@
+package ExerciseOJ;
+
+import java.io.BufferedReader;
+import java.io.InputStreamReader;
+import java.util.ArrayList;
+//注意最后那个结果是之输出一行换行，其余输出两行换行!!!
+public class Main1002
+{
+    public static void main(String[] args) throws Exception
+    {
+        BufferedReader stdin = new BufferedReader( new InputStreamReader(System.in));
+        String temp = null;
+        int cnt = 0;
+        ArrayList<Integer> ans = new ArrayList<>();
+        temp = stdin.readLine();
+        int n = Integer.parseInt(temp);
+        for(int tt=0; tt<n; ++tt)
+        {
+            temp = stdin.readLine();
+            ans.clear();//arr qing kong
+            String[] mid = temp.split(" ");
+            int i, j, sum, add = 0;//shi fou jin wei
+            for ( i=mid[0].length()-1, j=mid[1].length()-1; i>=0 && j>=0; --i,--j)
+            {
+                sum = mid[0].charAt(i) - '0' + mid[1].charAt(j) - '0' + add;
+                add =  sum/10;
+                ans.add(sum%10);
+            }
+            if(i>j)
+                for(int k=i; k>=0; --k)
+                {
+                    sum = mid[0].charAt(k) - '0' + add;
+                    add = sum/10;
+                    ans.add(sum%10);
+
+                }
+            else
+                for(int k=j; k>=0; --k)
+                {
+                    sum = mid[1].charAt(k) - '0' + add;
+                    add = sum/10;
+                    ans.add(sum%10);
+
+                }
+            System.out.println("Case " + ++cnt + ":");
+            System.out.print(mid[0] + " + " + mid[1] + " = ");
+            for (int k=ans.size()-1; k>=0; --k)
+            {
+                System.out.print(ans.get(k));
+            }
+            System.out.println();//huan hang
+            if(cnt<n)
+                System.out.println();//huan hang, zhe ge di fang shi ge da keng!!!
+
+        }
+    }
+}
+
+/*
+2
+1 2
+112233445566778899 998877665544332211
+
+*/
