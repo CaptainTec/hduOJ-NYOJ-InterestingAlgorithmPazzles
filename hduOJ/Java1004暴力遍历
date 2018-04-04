@@ -1,0 +1,55 @@
+package hudOJ;
+
+import java.util.Scanner;
+public class Main1004violence
+{
+    public static void main(String[] args)
+    {
+        Scanner cin=new Scanner(System.in);
+        int i,j,m,n;
+        String[] color=new String[1000];      //存储小球的颜色
+        int[] count=new int[1000];            //存储每种颜色小球出现的次数
+        n=cin.nextInt();
+        while(n!=0)
+        {
+            for(i=0;i<n;i++)                  //计数器归零
+            {
+                count[i]=0;
+            }
+
+            for(i=0;i<n;i++)                 //读入小球的颜色，并记录不同颜色出现的次数
+            {
+                color[i]=cin.next();
+                for(j=0;j<=i;j++)
+                {
+                    if(color[i].endsWith(color[j]))
+                    {
+                        count[j]++;
+                        continue;
+                    }
+                }
+
+            }
+
+//            for(int k=0; k<n; ++k)
+//            {
+//                System.out.print(color[k] + " ");
+//            }
+//            System.out.println("-----------");
+//            for(int k=0; k<n; ++k)
+//            {
+//                System.out.print(count[k] + " ");
+//            }
+//            System.out.println();
+
+            m=0;
+            for(i=0;i<n;i++)                     //求出颜色出现最多的小球，并记录其编号
+            {
+                if(count[i]>count[m])
+                    m = i;
+            }
+            System.out.println(color[m]);
+            n=cin.nextInt();
+        }
+    }
+}
