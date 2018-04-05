@@ -1,0 +1,91 @@
+package hudOJ;
+
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.util.ArrayList;
+
+public class Main1005
+{
+    public static void main(String[] args) throws IOException
+    {
+        BufferedReader stdin = new BufferedReader(new InputStreamReader(System.in));
+        //ArrayList<Integer> ans = new ArrayList<>();//全部暂存的话会内存超限, 但是循环计算一次又会超时
+        //可以用数组暂存有规律的第一组数据
+        ArrayList<Integer> ans = new ArrayList<>();
+
+        while(true)
+        {
+            ans.clear();
+            String[] mid = stdin.readLine().split(" ");
+            int a = Integer.parseInt(mid[0]);
+            int b = Integer.parseInt(mid[1]);
+            int n = Integer.parseInt(mid[2]);
+            if(a==0 && b==0 && n==0) return;
+//            int first = 1, second = 1, key;
+            a %= 7;
+            b %= 7;
+            ans.add(1);
+            ans.add(1);
+            ans.add((a+b)%7);
+            //for(int i=2; i<n; ++i)//循环一次计算会超时,因为n可能非常大。应该直接找规律，直接输出mod7的余数
+            /*
+            *因为f(n)的结果是模7的，那么f(n)的结果只可能在{0,1,2,3,4,5,6,}中，
+            *这样f(n)与f(n-1)的结果只可能是7*7 = 49种，
+            *即f(n)的周期<=49
+            *合理利用周期性，便可以大大提高程序运行时间。
+            * */
+            if(a==0 && b==0)
+            {
+                if (n<=2)
+                    System.out.println("1");
+                else System.out.println("0");
+            }
+            else if (a!=0 && b==0)
+            {
+                if (n<=2)
+                    System.out.println("1");
+                else
+                {
+                    for(int i=3; i<50; ++i)
+                    {
+                        int temp = ans.get(i-1)*a%7;
+                        ans.add(temp);
+                        if(temp==a)
+                        {
+                            int mod = ans.size()-3;
+                            System.out.println(ans.get((n-3)%mod+2));
+                            break;
+                        }
+                    }
+                }
+            }
+            else
+            {
+                for(int i=3; i<50; ++i)
+                {
+                    int temp = (a*ans.get(i-1) + b*ans.get(i-2))%7;
+                    ans.add(temp);
+                    if(ans.get(i)==1 && ans.get(i-1)==1)
+                    {
+                        int mod = ans.size()-2;
+                        System.out.println(ans.get((n-1)%mod));
+                        break;
+                    }
+                }
+
+            }
+        }
+    }
+}
+/*
+1 1 301
+1 2 111
+1 4 888
+1 0 987
+0 5 932
+3 4 123
+0 0 0
+
+
+*/
