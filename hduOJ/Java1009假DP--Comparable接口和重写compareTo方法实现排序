@@ -1,0 +1,75 @@
+package hudOJ;
+//AC 666ms
+import java.util.Arrays;
+import java.util.Scanner;
+
+class warehouse implements Comparable<warehouse>
+{
+    int javaBean;
+    int catFood;
+    double rate;//性价比
+    public warehouse(int a, int b)
+    {
+        this.javaBean = a;
+        this.catFood = b;
+        this.rate = a*1.0/b;
+    }
+    public int compareTo(warehouse a)
+    {
+        return this.rate-a.rate>0 ? -1 : 1;//按性价比由大到小排序
+    }
+}
+
+public class Main1009
+{
+    public static warehouse[] node = new warehouse[1010];
+    public static void main(String[] args)
+    {
+        Scanner stdin = new Scanner(System.in);
+        while (true)
+        {
+            int m = stdin.nextInt();
+            int n = stdin.nextInt();
+            if(m==-1 && n==-1) return ;
+            for(int t=0; t<n; ++t)
+            {
+                int a = stdin.nextInt();
+                int b = stdin.nextInt();
+                node[t] = new warehouse(a, b);
+//                node[t].javaBean = a;
+//                node[t].catFood = b;
+//                node[t].rate = a/b;
+            }
+            Arrays.sort(node,0,n);
+            double result = 0.0;
+            for(int key=0; key<n; ++key)
+            {
+                if(m-node[key].catFood>=0)
+                {
+                    result += node[key].javaBean;
+                    m -= node[key].catFood;
+                }
+                else
+                {
+                    result += node[key].rate*m;
+                    break;
+                }
+            }
+            System.out.printf("%.3f", result);
+            System.out.println();
+        }
+    }
+}
+/*
+5 3
+7 2
+4 3
+5 2
+20 3
+25 18
+24 15
+15 10
+-1 -1
+
+
+*/
