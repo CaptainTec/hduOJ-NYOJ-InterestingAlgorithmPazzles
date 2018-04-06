@@ -1,0 +1,42 @@
+package hudOJ;
+
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
+
+public class Main1008
+{
+    static int StrToInt(String ss)//将字符串转换成整数的方法（静态方法）
+    {
+        return Integer.parseInt(ss);
+    }
+
+    public static void main(String[] args) throws IOException
+    {
+        BufferedReader stdin = new BufferedReader(new InputStreamReader(System.in));
+        String[] temp = null;
+        while(true)
+        {
+            temp=stdin.readLine().split(" ");
+            int n = StrToInt(temp[0]);
+            if (n==0) return ;
+            int sum =5*n, pre = 0;//pre 表示初始状态为0th
+            for(int i=1; i<=n; ++i)
+            {
+                if(StrToInt(temp[i])>pre)
+                    sum += 6*(StrToInt(temp[i])-pre);
+                else if (StrToInt(temp[i])<=pre)
+                    sum += 4*(pre-StrToInt(temp[i]));
+                pre = StrToInt(temp[i]);//pre指针后移
+            }
+            System.out.println(sum);
+        }
+    }
+}
+/*
+1 2
+3 2 3 1
+0
+
+
+*/
