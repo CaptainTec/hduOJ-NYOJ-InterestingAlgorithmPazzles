@@ -1,0 +1,70 @@
+package hudOJ;
+//AC 436ms
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.util.ArrayList;
+import java.util.Comparator;
+
+class warehouse3
+{
+    double javaBean;
+    double catFood;
+    double rate;//性价比
+    public warehouse3(double a, double b)
+    {
+        this.javaBean = a;
+        this.catFood = b;
+        this.rate = javaBean/catFood;
+    }
+}
+
+class ansSort3 implements Comparator<warehouse3>
+{
+    public int compare(warehouse3 a, warehouse3 b)
+    {
+        return a.rate-b.rate>0 ? -1 : 1;//按性价比由大到小排序
+    }
+}
+
+public class Main1009_3
+{
+    public static void main(String[] args) throws IOException
+    {
+        BufferedReader stdin = new BufferedReader(new InputStreamReader(System.in));
+        String[] mid;
+        ArrayList<warehouse3> ans = new ArrayList<>();
+        while (true)
+        {
+            ans.clear();
+            mid = stdin.readLine().split(" ");
+            int m = Integer.parseInt(mid[0]);
+            int n = Integer.parseInt(mid[1]);
+            if(m==-1 && n==-1) return ;
+            for(int t=0; t<n; ++t)
+            {
+                mid = stdin.readLine().split(" ");
+                double a = Double.parseDouble(mid[0]);
+                double b = Double.parseDouble(mid[1]);
+                ans.add(new warehouse3(a, b));
+            }
+            ans.sort(new ansSort3());
+            double result = 0.0;
+            for(int key=0; key<n; ++key)
+            {
+                if(m-ans.get(key).catFood>=0)
+                {
+                    result += ans.get(key).javaBean;
+                    m -= ans.get(key).catFood;
+                }
+                else
+                {
+                    result += ans.get(key).rate*m;
+                    break;
+                }
+            }
+            System.out.printf("%.3f", result);
+            System.out.println();
+        }
+    }
+}
