@@ -1,0 +1,58 @@
+package hudOJ;
+
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.util.ArrayList;
+import java.util.Stack;
+
+public class Main1022_stack
+{
+    public static void main(String[] args) throws IOException
+    {
+    BufferedReader stdin = new BufferedReader(new InputStreamReader(System.in));
+    ArrayList<String> key = new ArrayList<>();
+    Stack<Character> ans = new Stack<>();//栈，存储进出列车
+    String temp;
+    while( (temp=stdin.readLine()) != null )
+    {
+        key.clear();
+        ans.clear();
+        String[] mid = temp.split(" ");
+        int n = Integer.parseInt(mid[0]);
+        boolean flag = false;
+        for (int i=0,j=0; i<n; ++i)
+        {
+            ans.add(mid[1].charAt(i));
+            key.add("in");//元素进栈
+            while(j<n && !ans.empty() && mid[2].charAt(j)==ans.peek())
+            {
+                ans.pop();//栈顶元素出栈
+                key.add("out");
+                ++j;
+            }
+            //不用加ans是否为空的判断
+            if (key.size()==2*n)//当数组容量为n的2倍时，说明符合要求
+                flag = true;
+        }
+        if (!flag)
+        {
+            System.out.println("No.");
+        }
+        else
+        {
+            System.out.println("Yes.");
+            for(int i=0; i<key.size(); ++i)
+                System.out.println(key.get(i));
+        }
+        System.out.println("FINISH");
+    }
+    }
+}
+/*
+3 123 321
+3 123 312
+5 12345 24531
+5 12345 32145
+
+ */
