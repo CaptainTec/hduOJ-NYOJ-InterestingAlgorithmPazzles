@@ -1,0 +1,39 @@
+package nyOJ;
+
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
+
+public class Main1079_DP
+{
+    public static void main(String[] args) throws IOException
+    {
+        BufferedReader stdin = new BufferedReader(new InputStreamReader(System.in));
+        int n = Integer.parseInt(stdin.readLine());
+        int[] ans = new int[1010];
+        for (int t=0; t<n; ++t)
+        {
+            int m = Integer.parseInt(stdin.readLine());
+            String[] mid = stdin.readLine().split(" ");
+            for (int i=0; i<=m; ++i)
+            {
+                ans[i] = 1;
+                for (int j=0; j<i; ++j)
+                {//下面要把i==m条件放在前面，这样可以最后一次循环(i==m成立时)截断后面的条件，否则后面的条件存在下标越界
+                    if(i==m||Integer.parseInt(mid[j])>Integer.parseInt(mid[i]))//i==m是为最后遍历整个数组，求最大值
+                        ans[i] = Math.max(ans[j]+1, ans[i]);
+                }
+            }
+            System.out.println(ans[m]-1);
+        }
+    }
+}
+/*
+2
+8
+389 207 155 300 299 170 158 65
+3
+88 34 65
+
+
+*/
