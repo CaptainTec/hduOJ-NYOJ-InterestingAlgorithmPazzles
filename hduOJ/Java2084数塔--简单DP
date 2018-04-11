@@ -1,0 +1,73 @@
+/*
+用一个数组存储当前行由上到下得到的最大值，注意：每往下进行一列需要用一个pre数组暂存上一行的数组的各值。
+注意java下list列表更新元素用set()方法，并且暂存数组时不能直接赋值pre = ans; 因为java列表下面直接赋值的是地址(引用)，
+相当于还是对原数组操作，起不到效果。
+
+另外需要注意的就是 赋值前要清空pre数组，
+
+每一组case读入前 也要清空 ans数组。
+
+最后用集合工具类Collections对列表求最大值。
+
+强制自己使用Java集合采用列表，其实完全可以用数组实现，数组处理起来没那么复杂。
+*/
+
+
+package hudOJ;
+
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.util.ArrayList;
+import java.util.Collections;
+
+
+public class Main2084_dp
+{
+    public static void Cpoy(ArrayList<Integer> a, ArrayList<Integer> b)
+    {
+        for(int i=0; i<b.size(); ++i)
+            a.add(b.get(i));
+    }
+
+    public static void main(String[] args) throws IOException
+    {
+        BufferedReader stdin = new BufferedReader(new InputStreamReader(System.in));
+        int t = Integer.parseInt(stdin.readLine());
+        ArrayList<Integer> ans = new ArrayList<>();
+        ArrayList<Integer> pre = new ArrayList<>();
+        for(int k=0; k<t; ++k)
+        {
+            ans.clear();
+            int n = Integer.parseInt(stdin.readLine());
+            ans.add(Integer.parseInt(stdin.readLine()));
+            for(int i=1; i<n; ++i)
+            {
+                ans.add(0);
+//                pre = ans;//把列表ans的内容复制给pre列表, 不能直接这样复制，因为引用的传递而不起效果。
+                pre.clear();
+                Cpoy(pre, ans);
+                String[] mid = stdin.readLine().split(" ");
+                ans.set(0,pre.get(0)+Integer.parseInt(mid[0]));//第一个元素和最后一个元素没得选，只能从上加下来
+                for(int j=1; j<i; ++j)
+                {
+                    int temp = Math.max(pre.get(j-1), pre.get(j));
+                    ans.set(j, temp+Integer.parseInt(mid[j]));
+                }
+                ans.set(i, pre.get(i-1)+Integer.parseInt(mid[i]));//最后一个元素没得选，只能从上加下来
+//                System.out.println(ans);
+            }
+            System.out.println(Collections.max(ans));//用Collections下的max求列表最大值
+        }
+    }
+}
+/*
+1
+5
+7
+3 8
+8 1 0
+2 7 4 4
+4 5 2 6 5
+
+*/
