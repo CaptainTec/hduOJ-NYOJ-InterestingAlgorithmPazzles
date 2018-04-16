@@ -1,0 +1,70 @@
+// Created by CaptainT on 2018/4/12.
+//
+#include<iostream>
+#include<cstdio>
+#include<cstdlib>
+#include<cstring>
+using namespace std;
+
+//此题目必须用一个二维数组占存所有的T时数据， 不能换成两个一维数组 
+int dp[100005][12];//第t秒在第x位置所接陷饼数
+int max(int a,int b)
+{
+    return a>b?a:b;
+}
+int max(int a,int b,int c)
+{
+    int q=a>b?a:b;
+    int w=b>c?b:c;
+    return q>w?q:w;
+}
+
+int main()
+{
+    int n;
+    while(scanf("%d",&n)!=EOF&&n)
+    {
+        int maxn=0;
+        memset(dp,0,sizeof(dp));
+        while(n--)
+        {
+            int t=0,x=0;
+            scanf("%d%d",&x,&t);
+            dp[t][x]++;
+            if(maxn<t)maxn=t;
+        }
+        for(int i=maxn-1;i>=0;i--)
+        {
+            for(int j=0;j<=10;j++)
+            {
+                if(j==0)
+                {
+                    dp[i][j]=dp[i][j]+max(dp[i+1][j],dp[i+1][j+1]);
+                }
+                else if(j==10)
+                {
+                    dp[i][j]=dp[i][j]+max(dp[i+1][j],dp[i+1][j-1]);
+                }
+                else
+                {
+                    dp[i][j]=dp[i][j]+max(dp[i+1][j-1],dp[i+1][j],dp[i+1][j+1]);
+                }
+            }
+        }
+        printf("%d\n",dp[0][5]);
+    }
+    return 0;
+}
+/*
+6
+5 1
+4 1
+6 1
+7 2
+7 2
+8 3
+0
+
+
+
+*/
