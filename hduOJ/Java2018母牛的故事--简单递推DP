@@ -1,0 +1,42 @@
+package hudOJ;
+
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
+//递推公式 dp[n] = dp[n-1] + dp[n-3]
+class mathod
+{
+    int[] dp = new int[60];
+    public void init()
+    {
+        for(int i=1; i<=4; ++i)
+            dp[i] = i;
+        for(int i=5; i<59; ++i)
+            dp[i] = dp[i-1] + dp[i-3];
+    }
+}
+
+public class Main2018_dituiDP
+{
+    public static void main(String[] args) throws IOException
+    {
+        mathod temp = new mathod();
+        temp.init();
+        BufferedReader stdin = new BufferedReader(new InputStreamReader(System.in));
+        while(true)
+        {
+            int mid = Integer.parseInt(stdin.readLine());
+            if (mid==0) return;
+            System.out.println(temp.dp[mid]);
+        }
+
+    }
+}
+/*
+2
+4
+5
+0
+
+
+*/
