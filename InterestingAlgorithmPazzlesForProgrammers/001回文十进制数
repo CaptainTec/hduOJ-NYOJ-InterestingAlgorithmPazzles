@@ -1,0 +1,38 @@
+package InterestingAlgorithmPazzles;
+/*
+* 回文十进制数
+* 求十进制、八进制、二进制表示都是回文数的大于十进制数10的最小值
+*
+* 答案是 585 (八进制1111)(二进制1001001001)
+*
+* Java进制转换接口：Integer类下
+* toBinaryString() , toOctalString() , toHexString()
+*
+* 注意：将字符串翻转可以new一个StringBuffer()对象，让后调用其reverse()方法，再调用其toString()方法转成字符串类型
+* */
+public class Main001
+{
+    public static void main(String[] args)
+    {
+//        int num = 585;
+        for(int num=11; ;++num)
+        {
+////            System.out.println(new StringBuilder(Integer.toBinaryString(num)).reverse().toString());
+////            System.out.println(Integer.toBinaryString(num).equals(Integer.toBinaryString(num)));
+         if(Integer.toBinaryString(num).equals(new StringBuilder(Integer.toBinaryString(num)).reverse().toString())==true
+         && Integer.toOctalString(num).equals(new StringBuilder(Integer.toOctalString(num)).reverse().toString())==true
+         && (new StringBuilder(""+num).reverse().toString().equals(new StringBuilder(""+num).toString())==true)
+                    )
+         {
+             System.out.println(num);
+             break;
+         }
+//            System.out.println(Integer.toBinaryString(num).equals(new StringBuilder(Integer.toBinaryString(num)).reverse().toString()));
+//            System.out.println(Integer.toOctalString(num).equals(new StringBuilder(Integer.toOctalString(num)).reverse().toString()));
+//            System.out.println(new StringBuilder(""+num).reverse().toString().equals(new StringBuilder(""+num)));
+//            String mid = new StringBuilder(""+num).reverse().toString();
+//            System.out.println(mid.equals(new StringBuilder(""+num).toString()));
+//            System.out.println(new StringBuilder(""+num));
+        }
+    }
+}
