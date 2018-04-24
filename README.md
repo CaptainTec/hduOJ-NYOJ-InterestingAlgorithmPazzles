@@ -1,11 +1,9 @@
 # NYOJ
 
-[Desktop Entry]  
-Type=Application  
-Name=eclipse  
-Comment=eclipse for android development  
-Exec=/home/ali/eclipse/java-neon2/eclipse/eclipse  
-Icon=/home/ali/eclipse/java-neon2/eclipse/icon.xpm  
-Terminal=flase  
-Catergories=Development;IDE;  
-Name[en_US]=eclipse  
+
+
+
+# 程序员的算法趣题
+
+[**01回文十进制数**](https://blog.csdn.net/m0_38024592/article/details/80067054)
+
